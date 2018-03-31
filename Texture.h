@@ -23,13 +23,13 @@ struct Texture {
 		glBindTexture(type, 0);
 	}
 
+	static void active(GLenum tex) {
+		glActiveTexture(tex);
+	}
+
 	void activeBind(GLenum tex, GLenum type = GL_TEXTURE_2D) const {
 		active(tex);
 		bind(type);
-	}
-
-	static void active(GLenum tex) {
-		glActiveTexture(tex);
 	}
 
 	void load2D(const char *filename) const;

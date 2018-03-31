@@ -14,8 +14,8 @@ void Texture::load2D(const char *filename) const {
 }
 
 void Texture::loadCubeMap(const char *basename, const char *extname) const {
-	bind(GL_TEXTURE_2D);
-	simpleParameterSetup2D();
+	bind(GL_TEXTURE_CUBE_MAP);
+	simpleParameterSetupCubeMap();
 
 	std::array<std::string, 6> facenames = {
 		"right", "left",

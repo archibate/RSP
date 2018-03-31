@@ -60,8 +60,7 @@ public:
 
 	Mesh() {}
 	Mesh(const char *filename) {
-		std::ifstream fin;
-		fin.open(filename);
+		std::ifstream fin(filename);
 		fromFile(fin);
 		fin.close();
 	}

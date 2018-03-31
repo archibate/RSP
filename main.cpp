@@ -63,7 +63,7 @@ static bool loadShader(Shader *shaderProgram,
 
 Shader *lightingShader, *lampShader, *skyboxShader;
 MeshNode *rootNode;
-Texture *skybox;
+Texture *skyboxTexture;
 MeshNode *skyboxNode;
 
 static string file_get_contents(const char *filename) {
@@ -91,38 +91,23 @@ static void initGL()
 		file_get_contents("lamp.vert").c_str(),
 		file_get_contents("lamp.frag").c_str())
 	   ) terminate(-1);
-	if (!loadShader(lampShader = new Shader,
+
+	/*if (!loadShader(skyboxShader = new Shader,
 		file_get_contents("skybox.vert").c_str(),
 		file_get_contents("skybox.frag").c_str())
-	   ) terminate(-1);
+	   ) terminate(-1);*/
 
 	// load models
 
-	auto cube = new Mesh("cube.mesh");
-
-	glm::mat4 model0;
-	glm::mat4 model1;
-	glm::mat4 model2;
-
-	model1 = glm::translate(model1, glm::vec3(-0.75f, 0.0f, 0.0f));
-	model1 = glm::scale(model1, glm::vec3(0.5f, 0.5f, 0.5f));
-	model2 = glm::translate(model2, glm::vec3(0.75f, 0.0f, 0.0f));
-	model2 = glm::scale(model2, glm::vec3(0.5f, 0.5f, 0.5f));
-
-	rootNode = new MeshNode(cube, model0, {
-			MeshNode(cube, model1),
-			MeshNode(cube, model2),
-			});
+	rootNode = new MeshNode("cubes.node");
 	rootNode->setup();
 
-	glm::mat4 skyboxModel;
+	/*glm::mat4 skyboxModel;
 	skyboxModel = glm::scale(skyboxModel, glm::vec3(5.0f, 5.0f, 5.0f));
 	skyboxNode = new MeshNode(cube, skyboxModel);
 
-	skybox = new Texture;
-	skybox->loadCubeMap("images/skybox/", ".jpg");
-	skybox->bind(GL_TEXTURE_CUBE_MAP);
-
+	skyboxTexture = new Texture;
+	skyboxTexture->loadCubeMap("images/skybox/", ".jpg");*/
 }
 
 Camera camera
@@ -164,19 +149,27 @@ static void render()
 		, glm::cos(glm::radians(17.5f))
 		);
 
+	DirLight sunlight
+		( glm::vec3(0.0f, 1.0f, 0.0f)
+		, glm::vec3(1.0f, 0.9f, 0.8f) * 2.0f
+		);
+
 	glm::mat4 rootModel;
 
-	skyboxShader->use();
-	skybox->activeBind(GL_TEXTURE0, GL_TEXTURE_CUBE_MAP);
+/*using std::cout;
+using std::endl;*/
+
+	/*skyboxShader->use();
+	skyboxTexture->activeBind(GL_TEXTURE0, GL_TEXTURE_CUBE_MAP);
 	skyboxShader->uniform("skybox", 0);
 	camera.unify(*skyboxShader);
 	skyboxShader->uniformMatrix4("projview", glm::value_ptr(projview));
-	skyboxNode->draw(*skyboxShader, rootModel);
+	skyboxNode->draw(*skyboxShader, rootModel);*/
 
 	auto &shader = *lightingShader;
 	shader.use();
-	shader.uniform("skybox", 0);
-	light.unifyEnable(shader, 1);
+	sunlight.unifyEnable(shader);
+	light.unifyEnable(shader, 0);
 	camera.unify(shader);
 	shader.uniformMatrix4("projview", glm::value_ptr(projview));
 	rootNode->draw(shader, rootModel);
@@ -184,17 +177,17 @@ static void render()
 
 static void processInput(GLFWwindow *window)
 {
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+		glfwSetWindowShouldClose(window, true);
 
-    camera.input.left = (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS);
-    camera.input.right = (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS);
+	camera.input.left = (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS);
+	camera.input.right = (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS);
 
-    camera.input.forward = (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS);
-    camera.input.backward = (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS);
+	camera.input.forward = (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS);
+	camera.input.backward = (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS);
 
-    camera.input.up = (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS);
-    camera.input.down = (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS);
+	camera.input.up = (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS);
+	camera.input.down = (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS);
 }
 
 static void resizeCallback(GLFWwindow *window, int width, int height)

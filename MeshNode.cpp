@@ -1,11 +1,6 @@
 #include "Shader.h"
 #include "MeshNode.h"
-#include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <iostream>
-
-using std::cout;
-using std::endl;
 
 void MeshNode::setup() const
 {

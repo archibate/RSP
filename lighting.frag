@@ -24,7 +24,6 @@ struct Light {
     float linear;
     float quadratic;
 
-    vec3 ambient;
     vec3 diffuse;
     vec3 specular;
 };
@@ -73,7 +72,7 @@ vec3 calcPointLight(Light light, vec3 norm, vec3 fragPos, vec3 viewDir,
       float invatt = light.constant + light.linear * sqrt(dist2) + light.quadratic * dist2;
       result /= invatt;
    }
-   return result + light.ambient * sampDiffuse;
+   return result;
 }
 
 vec3 calcDirLight(DirLight light, vec3 norm, vec3 viewDir,

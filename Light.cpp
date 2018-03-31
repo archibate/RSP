@@ -12,7 +12,6 @@ Light::Light
 	, direction   (direction)
 	, innerCutOff (innerCutOff)
 	, outerCutOff (outerCutOff)
-	, ambient     (0.2f * color)
 	, diffuse     (0.5f * color)
 	, specular    (1.0f * color)
 	, constant    (1.0f)
@@ -26,7 +25,6 @@ void Light::unify(Shader shader, std::string name) const
 	shader.uniform3v((name + ".direction").c_str(), &direction[0]);
 	shader.uniform((name + ".innerCutOff").c_str(), innerCutOff);
 	shader.uniform((name + ".outerCutOff").c_str(), outerCutOff);
-	shader.uniform3v((name + ".ambient").c_str(),  &ambient[0]);
 	shader.uniform3v((name + ".diffuse").c_str(),  &diffuse[0]);
 	shader.uniform3v((name + ".specular").c_str(), &specular[0]);
 	shader.uniform((name + ".constant").c_str(),  constant);
@@ -41,9 +39,37 @@ void Light::unify(Shader shader, int index) const
 	unify(shader, os.str());
 }
 
-void Light::enableUnify(Shader shader, int index) const
+void Light::setEnable(Shader shader, int index, bool enable) const
 {
 	std::ostringstream os;
 	os << "lightEnables[" << index << "]";
-	shader.uniform(os.str().c_str(), true);
+	shader.uniform(os.str().c_str(), enable);
+}
+
+void DirLight::unify(Shader shader, std::string name) const
+{
+	shader.uniform3v((name + ".direction").c_str(), &direction[0]);
+	shader.uniform3v((name + ".ambient").c_str(),  &ambient[0]);
+	shader.uniform3v((name + ".diffuse").c_str(),  &diffuse[0]);
+	shader.uniform3v((name + ".specular").c_str(), &specular[0]);
+}
+
+DirLight::DirLight
+	( const glm::vec3 &direction
+	, const glm::vec3 &color
+	)
+	: direction   (direction)
+	, ambient     (0.03f * color)
+	, diffuse     (0.6f * color)
+	, specular    (1.0f * color)
+{}
+
+void DirLight::unify(Shader shader) const
+{
+	unify(shader, "dirLight");
+}
+
+void DirLight::setEnable(Shader shader, bool enable) const
+{
+	shader.uniform("dirLightEnable", enable);
 }
