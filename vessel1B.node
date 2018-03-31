@@ -1,0 +1,34 @@
+#mesh-node-model version 0.01
+
+#meshfiles
+cube.mesh
+cylinder.mesh
+cone.mesh
+panel.mesh
+nobot-cone.mesh
+thruster.mesh
+
+#defs
+
+-	id
+	1	trsv	0.0 0.0 0.0	1.0 1.0 2.0
+	end
+	-	tr	0.0 0.0 -1.05
+		4	trsv	 0.23  0.23 0.0	0.32 0.32 -0.14
+			5	trsv	0.0 0.0 0.16	1.2 1.2 -3.4
+			end
+		end
+		4	trsv	-0.23  0.23 0.0	0.32 0.32 -0.14
+			5	trsv	0.0 0.0 0.16	1.2 1.2 -3.4
+			end
+		end
+		4	trsv	 0.23 -0.23 0.0	0.32 0.32 -0.14
+			5	trsv	0.0 0.0 0.16	1.2 1.2 -3.4
+			end
+		end
+		4	trsv	-0.23 -0.23 0.0	0.32 0.32 -0.14
+			5	trsv	0.0 0.0 0.16	1.2 1.2 -3.4
+			end
+		end
+	end
+end

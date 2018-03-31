@@ -13,15 +13,16 @@ print('\n\n#vertices')
 for i in range(0, divs):
     dph = math.pi / divs
     phi = i * 2 * dph
+    so, co = math.sin(phi), math.cos(phi)
     s1, c1 = math.sin(phi - dph), math.cos(phi - dph)
     s2, c2 = math.sin(phi + dph), math.cos(phi + dph)
     #     Position                  Normal       TexCoords
-    print(0.5 * s2, 0.5 * c2,  0.5, s2, c2, 0.0, 1.0, 1.0)
-    print(0.5 * s1, 0.5 * c1,  0.5, s1, c1, 0.0, 0.0, 1.0)
-    print(0.5 * s2, 0.5 * c2, -0.5, s2, c2, 0.0, 1.0, 0.0)
-    print(0.5 * s2, 0.5 * c2, -0.5, s2, c2, 0.0, 1.0, 0.0)
-    print(0.5 * s1, 0.5 * c1,  0.5, s2, c2, 0.0, 0.0, 1.0)
-    print(0.5 * s1, 0.5 * c1, -0.5, s1, c1, 0.0, 0.0, 0.0)
+    print(0.5 * s2, 0.5 * c2,  0.5, so, co, 0.0, 1.0, 1.0)
+    print(0.5 * s1, 0.5 * c1,  0.5, so, co, 0.0, 0.0, 1.0)
+    print(0.5 * s2, 0.5 * c2, -0.5, so, co, 0.0, 1.0, 0.0)
+    print(0.5 * s2, 0.5 * c2, -0.5, so, co, 0.0, 1.0, 0.0)
+    print(0.5 * s1, 0.5 * c1,  0.5, so, co, 0.0, 0.0, 1.0)
+    print(0.5 * s1, 0.5 * c1, -0.5, so, co, 0.0, 0.0, 0.0)
     print('\n')
     if hastopbot:
         #     Position                  Normal         TexCoords

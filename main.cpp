@@ -61,7 +61,7 @@ static bool loadShader(Shader *shaderProgram,
 	return true;
 }
 
-Shader *lightingShader, *lampShader, *skyboxShader;
+Shader *lightingShader;//, *lampShader, *skyboxShader;
 MeshNode *rootNode;
 Texture *skyboxTexture;
 MeshNode *skyboxNode;
@@ -79,6 +79,7 @@ static void initGL()
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
+	glEnable(GL_FRAMEBUFFER_SRGB);
 
 	// load shaders
 
@@ -87,10 +88,10 @@ static void initGL()
 		file_get_contents("lighting.frag").c_str())
 	   ) terminate(-1);
 
-	if (!loadShader(lampShader = new Shader,
+	/*if (!loadShader(lampShader = new Shader,
 		file_get_contents("lamp.vert").c_str(),
 		file_get_contents("lamp.frag").c_str())
-	   ) terminate(-1);
+	   ) terminate(-1);*/
 
 	/*if (!loadShader(skyboxShader = new Shader,
 		file_get_contents("skybox.vert").c_str(),
@@ -99,7 +100,27 @@ static void initGL()
 
 	// load models
 
-	rootNode = new MeshNode("cubes.node");
+	glm::mat4 model0;
+	glm::mat4 modelCubes;
+	glm::mat4 model1A;
+	glm::mat4 model1B;
+
+	model0 = glm::rotate(model0, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+	/*model1A = glm::translate(model1B, glm::vec3(0.0f, 0.0f, -1.6f));
+	model1B = glm::translate(model1B, glm::vec3(0.0f, 0.0f, -3.8f));
+
+	rootNode = new MeshNode(nullptr, model0, {
+			MeshNode(nullptr, modelCubes, {
+				MeshNode("cubes.node"),
+			}),
+			MeshNode(nullptr, model1A, {
+				MeshNode("vessel1A.node"),
+			}),
+			MeshNode(nullptr, model1B, {
+				MeshNode("vessel1B.node"),
+			}),
+	});*/
+	rootNode = new MeshNode(nullptr, model0, {MeshNode("cubes.node")});
 	rootNode->setup();
 
 	/*glm::mat4 skyboxModel;
